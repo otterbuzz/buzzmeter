@@ -2,6 +2,7 @@ const express = require('express')
 const Twitter = require('twitter')
 const fs      = require('fs')
 const app     = express()
+let score     = require('./back/score');
 
 const json_content = JSON.parse(fs.readFileSync("credentials.json"));
 
@@ -36,7 +37,7 @@ app.get('/tweets', function (req, res) {
   console.log(params)
   client.get('search/tweets.json', params, function(error, tweets, response){
       if (!error) {
-        res.send(tweets)
+        res.send(score.score_tweet(tweets))
       } else {
         res.send(error)
       }

@@ -1,14 +1,14 @@
 <template>
-  <div class="container">
+  <div class="buzzDashboard container">
     <div class="refreshBar progress">
-      <div class="progress-bar bg-warning" role="progressbar" :style="'width: ' + count + '%'" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+      <div class="progress-bar bg-buzzOrange" role="progressbar" :style="'width: ' + count + '%'" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
     <div class="row">
       <div class="topics col-4">
-        <div v-for="(topic, index) in trendingTopics" :key="index"  class="card bg-dark text-white mb-3">
+        <div v-for="(topic, index) in trendingTopics" :key="index" class="card bg-buzzGrey text-white mb-3">
           <div class="card-body" @click="displayTweets(topic.name)">
-            <h5 class="card-title">{{ topic.name }}</h5>
-            <p class="tweetCount card-text text-right text-warning" v-if="topic.tweet_volume">{{ topic.tweet_volume }} tweets</p>
+            <h5 class="card-title" :class="{ 'text-buzzOrange': topic.name == hashtag }">{{ topic.name }}</h5>
+            <p class="tweetCount card-text text-right" v-if="topic.tweet_volume">{{ topic.tweet_volume }} tweets</p>
           </div>
         </div>
       </div>
@@ -57,15 +57,15 @@ export default {
 </script>
 
 <style>
-.topics .card {
+.buzzDashboard .topics .card {
   cursor: pointer;
 }
 
-.refreshBar {
+.buzzDashboard .refreshBar {
   margin: 18px 0;
 }
 
-.tweetCount {
+.buzzDashboard .tweetCount {
   font-size: 0.9em;
 }
 </style>

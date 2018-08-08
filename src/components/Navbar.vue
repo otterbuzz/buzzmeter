@@ -1,7 +1,7 @@
 <template>
-  <nav class="navbar navbar-dark bg-dark">
+  <nav class="buzzNavbar navbar navbar-dark bg-buzzGrey">
     <div class="navTitle navbar-brand">
-      <i class="material-icons text-warning">whatshot</i>
+      <i class="material-icons text-buzzOrange">whatshot</i>
       <span>BuzzMeter</span>
     </div>
   </nav>
@@ -19,7 +19,7 @@ export default {
 </script>
 
 <style>
-.navTitle i{
+.buzzNavbar .navTitle i{
   vertical-align: -18%;
 }
 </style>

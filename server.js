@@ -1,4 +1,3 @@
-
 const express = require('express')
 const Twitter = require('twitter')
 const fs      = require('fs')

@@ -71,13 +71,4 @@ export default {
 .buzzDashboard .tweetCount {
   font-size: 0.9em;
 }
-
-#buttonScroll {
-  position:fixed;
-  right:20px;
-  bottom:20px;
-  font-size:3em;
-  border-radius: 6px;
-  cursor: pointer;
-}
 </style>

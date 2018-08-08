@@ -1,8 +1,8 @@
 <template>
 <div class="buzzTweets text-buzzGrey" ref="tweetList">
   <h1>{{ hashtag }}</h1>
-  <Tweet v-for="(tweet, index) in tweets" :id="tweet.id_str" :key="tweet.id_str">
-    <div v-if="index == 0" class="spinner">
+  <Tweet v-for="tweet in tweets" :id="tweet.id_str" :key="tweet.id">
+    <div v-if="tweet.id == tweets[0].id" class="spinner">
       <div class="bounce1"></div>
       <div class="bounce2"></div>
       <div class="bounce3"></div>

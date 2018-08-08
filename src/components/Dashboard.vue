@@ -1,18 +1,18 @@
 <template>
-  <div class="buzzDashboard container">
+  <div class="buzzDashboard container" ref="top">
     <div class="refreshBar progress">
       <div class="progress-bar bg-buzzOrange" role="progressbar" :style="'width: ' + count + '%'" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
     <div class="row">
-      <div class="topics col-4">
+      <div class="topics col-6">
         <div v-for="(topic, index) in trendingTopics" :key="index" class="card bg-buzzGrey text-white mb-3">
-          <div class="card-body" @click="displayTweets(topic.name)">
+          <div class="card-body" v-scroll-to="'.buzzNavbar'" @click="displayTweets(topic.name)">
             <h5 class="card-title" :class="{ 'text-buzzOrange': topic.name == hashtag }">{{ topic.name }}</h5>
             <p class="tweetCount card-text text-right" v-if="topic.tweet_volume">{{ topic.tweet_volume }} tweets</p>
           </div>
         </div>
       </div>
-      <div class="col-8">
+      <div class="col-6">
         <Tweets :hashtag="hashtag" />
       </div>
     </div>
@@ -37,6 +37,9 @@ export default {
   methods: {
     displayTweets(hashtag) {
       this.hashtag = hashtag
+      this.$nextTick(() => {
+        this.$refs.top.scrollTop = 0;
+      })
     }
   },
   mounted(){
@@ -67,5 +70,14 @@ export default {
 
 .buzzDashboard .tweetCount {
   font-size: 0.9em;
+}
+
+#buttonScroll {
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  font-size:3em;
+  border-radius: 6px;
+  cursor: pointer;
 }
 </style>

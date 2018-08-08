@@ -1,19 +1,19 @@
 <template>
-<div class="buzzTweets text-buzzGrey">
+<div class="buzzTweets text-buzzGrey" ref="tweetList">
   <h1>{{ hashtag }}</h1>
-  <div class="tweet card bg-white" v-for="(tweet, index) in tweets" :key="index">
-    <div class="card-body">
-      <blockquote class="blockquote mb-0">
-        <p>{{ tweet.full_text}}</p>
-        <footer class="blockquote-footer">{{ '@' + tweet.user.screen_name }} |<span class="text-buzzOrange"> {{tweet.retweet_count }} RT</span> | <span class="text-buzzOrange"> {{tweet.favorite_count }} FAV</span> | {{ tweet.created_at }}</footer>
-      </blockquote>
+  <Tweet v-for="(tweet, index) in tweets" :id="tweet.id_str" :key="tweet.id_str">
+    <div v-if="index == 0" class="spinner">
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
     </div>
-  </div>
+  </Tweet>
 </div>
 </template>
 
 <script>
 import axios from 'axios'
+import { Tweet } from 'vue-tweet-embed'
 export default {
   name: 'Tweets',
   props: ['hashtag'],
@@ -22,6 +22,9 @@ export default {
       tweets: null,
       currentHashtag: null
     }
+  },
+  components: {
+    Tweet
   },
   beforeUpdate() {
     if (this.hashtag && this.currentHashtag != this.hashtag) {
@@ -37,7 +40,48 @@ export default {
 </script>
 
 <style>
-.buzzTweets .tweet {
-  margin: 10px 0;
-}
+  .buzzTweets .tweet {
+    margin: 10px 0;
+  }
+
+  .spinner {
+    margin: 100px auto 0;
+    width: 70px;
+    text-align: center;
+  }
+
+  .spinner > div {
+    width: 18px;
+    height: 18px;
+    background-color: #ef8239;
+    border-radius: 100%;
+    display: inline-block;
+    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  }
+
+  .spinner .bounce1 {
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+  }
+
+  .spinner .bounce2 {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+  }
+
+  @-webkit-keyframes sk-bouncedelay {
+    0%, 80%, 100% { -webkit-transform: scale(0) }
+    40% { -webkit-transform: scale(1.0) }
+  }
+
+  @keyframes sk-bouncedelay {
+    0%, 80%, 100% { 
+      -webkit-transform: scale(0);
+      transform: scale(0);
+    } 40% { 
+      -webkit-transform: scale(1.0);
+      transform: scale(1.0);
+    }
+  }
 </style>

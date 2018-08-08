@@ -36,4 +36,8 @@ export default {
 .bg-buzzGrey {
   background-color: #363636
 }
+
+.lobster {
+  font-family: 'Lobster';
+}
 </style>

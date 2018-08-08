@@ -3,6 +3,11 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import VueScrollTo  from 'vue-scrollto'
+
+Vue.use(VueScrollTo, {
+  easing: "ease-in-out"
+})
 
 Vue.config.productionTip = false
 

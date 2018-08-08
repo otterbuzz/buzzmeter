@@ -3,16 +3,17 @@ const Twitter = require('twitter')
 const app = express()
 
 let client = new Twitter({
-  consumer_key: '',
-  consumer_secret: '',
-  access_token_key: '',
-  access_token_secret: ''
+
 });
+
+app.get('/', function (req, res) {
+  res.send("Hello world!")
+})
 
 app.get('/trending', function (req, res) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  var params = {id: '615702'};
+  var params = {id: '23424819'};
   client.get('trends/place.json', params, function(error, tweets, response){
       if (!error) {
         res.send(tweets)

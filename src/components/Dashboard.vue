@@ -1,10 +1,14 @@
 <template>
   <div class="container">
+    <div class="refreshBar progress">
+      <div class="progress-bar progress-bar-striped bg-info" role="progressbar" :style="'width: ' + count + '%'" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
     <div class="row">
       <div class="topics col-4">
         <div v-for="(topic, index) in trendingTopics" :key="index"  class="card bg-light mb-3">
-          <div class="card-body" @click="browseHashtag(topic.name)">
-            <h5 class="card-title">{{ topic.name }}<span class="text-muted" v-if="topic.tweet_volume"> - {{ topic.tweet_volume }}</span></h5>
+          <div class="card-body" @click="displayTweets(topic.name)">
+            <h5 class="card-title">{{ topic.name }}</h5>
+            <p class="tweetCount card-text text-right text-muted" v-if="topic.tweet_volume">{{ topic.tweet_volume }} tweets</p>
           </div>
         </div>
       </div>
@@ -23,22 +27,30 @@ export default {
   data() {
     return {
       trendingTopics: null,
-      hashtag: null
+      hashtag: null,
+      count: 0
     }
   },
   components: {
     Tweets
   },
   methods: {
-    browseHashtag(hashtag) {
+    displayTweets(hashtag) {
       this.hashtag = hashtag
     }
   },
   mounted(){
-    axios
-      .get('http://localhost:3000/trending')
-      .then(response => this.trendingTopics = response.data[0].trends)
-
+    setInterval(() => {
+        if (this.count == 0) {
+          axios
+            .get('http://localhost:3000/trending')
+            .then(response => {
+              this.trendingTopics = response.data[0].trends
+              this.hashtag = this.hashtag ? this.hashtag : response.data[0].trends[0].name
+            })
+        }
+        this.count = (this.count + 1) % 100
+    }, 1000);
   }
 }
 
@@ -47,6 +59,13 @@ export default {
 <style>
 .topics .card {
   cursor: pointer;
-  height: 4em;
+}
+
+.refreshBar {
+  margin: 18px 0;
+}
+
+.tweetCount {
+  font-size: 0.9em;
 }
 </style>

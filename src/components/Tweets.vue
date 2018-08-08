@@ -1,9 +1,13 @@
 <template>
-<div class="container">
+<div>
   <h1>{{ hashtag }}</h1>
-  <div v-for="(tweet, index) in tweets" :key="index">
-    <h5>{{ tweet.user.screen_name }}</h5>
-    <p class="text-muted">{{ tweet.full_text }}</p>
+  <div class="tweet card" v-for="(tweet, index) in tweets" :key="index">
+    <div class="card-body">
+      <blockquote class="blockquote mb-0">
+        <p>{{ tweet.full_text}}</p>
+        <footer class="blockquote-footer">{{ '@' + tweet.user.screen_name }} | {{tweet.retweet_count }} RT | {{tweet.favorite_count }} FAV | {{ tweet.created_at }}</footer>
+      </blockquote>
+    </div>
   </div>
 </div>
 </template>
@@ -33,5 +37,7 @@ export default {
 </script>
 
 <style>
-
+.tweet {
+  margin: 10px 0;
+}
 </style>

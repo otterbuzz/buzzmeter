@@ -17,6 +17,8 @@ app.get('/trending', function (req, res) {
   client.get('trends/place.json', params, function(error, tweets, response){
       if (!error) {
         res.send(tweets)
+      } else {
+        res.send(error)
       }
   })
 })
@@ -29,6 +31,8 @@ app.get('/tweets', function (req, res) {
   client.get('search/tweets.json', params, function(error, tweets, response){
       if (!error) {
         res.send(tweets)
+      } else {
+        res.send(error)
       }
   })
 })

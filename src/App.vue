@@ -1,12 +1,17 @@
 <template>
   <div id="app">
+    <Navbar />
     <router-view/>
   </div>
 </template>
 
 <script>
+import Navbar from '@/components/Navbar'
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    Navbar
+  }
 }
 </script>
 
@@ -14,6 +19,5 @@ export default {
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   color: #2c3e50;
-  margin-top: 30px;
 }
 </style>

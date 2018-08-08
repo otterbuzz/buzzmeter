@@ -1,11 +1,11 @@
 <template>
 <div>
   <h1>{{ hashtag }}</h1>
-  <div class="tweet card" v-for="(tweet, index) in tweets" :key="index">
+  <div class="tweet card bg-dark text-white" v-for="(tweet, index) in tweets" :key="index">
     <div class="card-body">
       <blockquote class="blockquote mb-0">
         <p>{{ tweet.full_text}}</p>
-        <footer class="blockquote-footer">{{ '@' + tweet.user.screen_name }} | {{tweet.retweet_count }} RT | {{tweet.favorite_count }} FAV | {{ tweet.created_at }}</footer>
+        <footer class="blockquote-footer">{{ '@' + tweet.user.screen_name }} |<span class="text-warning"> {{tweet.retweet_count }} RT</span> | <span class="text-warning"> {{tweet.favorite_count }} FAV</span> | {{ tweet.created_at }}</footer>
       </blockquote>
     </div>
   </div>

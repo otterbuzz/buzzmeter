@@ -1,9 +1,16 @@
+
 const express = require('express')
 const Twitter = require('twitter')
+const fs      = require('fs')
 const app = express()
 
-let client = new Twitter({
+const json_content = JSON.parse(fs.readFileSync("credentials.json"));
 
+let client = new Twitter({
+  consumer_key: json_content.consumer_key,
+  consumer_secret: json_content.consumer_secret,
+  access_token_key: json_content.access_token_key,
+  access_token_secret: json_content.access_token_secret
 });
 
 app.get('/', function (req, res) {

@@ -1,4 +1,3 @@
-
 const retweet_weight = 1.5;
 const follower_weight = 3;
 const fav_weight = 1;

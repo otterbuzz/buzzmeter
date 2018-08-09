@@ -21,22 +21,19 @@ export default {
   color: #2c3e50;
 }
 
+/*Colors and fonts */
 .text-buzzOrange {
   color: #ef8239
 }
-
 .bg-buzzOrange {
   background-color: #ef8239
 }
-
 .text-buzzGrey {
   color: #363636
 }
-
 .bg-buzzGrey {
   background-color: #363636
 }
-
 .lobster {
   font-family: 'Lobster';
 }

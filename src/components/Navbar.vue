@@ -12,7 +12,12 @@ export default {
   name: 'Navbar',
   data() {
     return {
-
+      displayMode: 'Tweets'
+    }
+  },
+  methods: {
+    toggleDisplayMode() {
+      this.displayMode = this.displayMode == 'Tweets' ? 'Basic' : 'Tweets'
     }
   }
 }

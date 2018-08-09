@@ -1,14 +1,22 @@
 <template>
-<div class="buzzTweets text-buzzGrey" ref="tweetList">
-  <h1>{{ hashtag }}</h1>
-  <Tweet v-for="tweet in tweets" :id="tweet.id_str" :key="tweet.id">
-    <div v-if="tweet.id == tweets[0].id" class="spinner">
-      <div class="bounce1"></div>
-      <div class="bounce2"></div>
-      <div class="bounce3"></div>
+  <div class="buzzTweets text-buzzGrey" ref="tweetList">
+    <h1>{{ hashtag }}</h1>
+    <div class="tweets">
+      <Tweet v-if="displayMode == 'Tweets'" v-for="tweet in tweets" :id="tweet.id_str" :key="tweet.id">
+        <div v-if="tweet.id == tweets[0].id" class="spinner">
+          <div class="bounce1"></div>
+          <div class="bounce2"></div>
+          <div class="bounce3"></div>
+        </div>
+      </Tweet>
+      <div v-if="displayMode == 'Basic'" v-for="tweet in tweets" :key="tweet.id" class="card mb-3 text-buzzGrey">
+        <div class="card-header">{{ "@" + tweet.user.screen_name }} - {{ tweet.created_at.split(' +')[0] }} - {{ tweet.favorite_count }} FAV - {{ tweet.retweet_count }} RT</div>
+        <div class="card-body text-dark">
+          <p class="card-text">{{ tweet.full_text }}</p>
+        </div>
+      </div>
     </div>
-  </Tweet>
-</div>
+  </div>
 </template>
 
 <script>
@@ -16,7 +24,7 @@ import axios from 'axios'
 import { Tweet } from 'vue-tweet-embed'
 export default {
   name: 'Tweets',
-  props: ['hashtag'],
+  props: ['hashtag', 'displayMode'],
   data() {
     return {
       tweets: null,
@@ -40,10 +48,10 @@ export default {
 </script>
 
 <style>
-  .buzzTweets .tweet {
+  .buzzTweets .card {
     margin: 10px 0;
   }
-
+  
   .spinner {
     margin: 100px auto 0;
     width: 70px;

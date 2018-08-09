@@ -6,14 +6,14 @@
     <div class="row">
       <div class="topics col-6">
         <div v-for="(topic, index) in trendingTopics" :key="index" class="card bg-buzzGrey text-white mb-3">
-          <div class="card-body" v-scroll-to="'.buzzNavbar'" @click="displayTweets(topic.name)">
+          <div class="card-body" v-scroll-to="'.buzzNavbar'" @click="displayTweets(topic.name, 'Tweets')" @click.ctrl="displayTweets(topic.name, 'Basic')">
             <h5 class="card-title" :class="{ 'text-buzzOrange': topic.name == hashtag }">{{ topic.name }}</h5>
             <p class="tweetCount card-text text-right" v-if="topic.tweet_volume">{{ topic.tweet_volume }} tweets</p>
           </div>
         </div>
       </div>
-      <div class="col-6">
-        <Tweets :hashtag="hashtag" />
+      <div class="tweets col-6">
+        <Tweets :hashtag="hashtag" :displayMode="displayMode"/>
       </div>
     </div>
   </div>
@@ -28,6 +28,7 @@ export default {
     return {
       trendingTopics: null,
       hashtag: null,
+      displayMode: 'Tweets',
       count: 0
     }
   },
@@ -35,11 +36,9 @@ export default {
     Tweets
   },
   methods: {
-    displayTweets(hashtag) {
+    displayTweets(hashtag, displayMode) {
       this.hashtag = hashtag
-      this.$nextTick(() => {
-        this.$refs.top.scrollTop = 0;
-      })
+      this.displayMode = displayMode
     }
   },
   mounted(){

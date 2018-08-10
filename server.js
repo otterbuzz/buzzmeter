@@ -26,7 +26,7 @@ app.get('/trending', function (req, res) {
   var params = {id: '23424819'};
   client.get('trends/place.json', params, function(error, tweets, response){
       if (!error) {
-        test.trends = tweets;
+        trendHandler.trends = tweets;
         res.send(tweets)
       } else {
         res.send(error)
@@ -42,7 +42,7 @@ app.get('/tweets', function (req, res) {
   client.get('search/tweets.json', params, function(error, tweets, response){
       if (!error) {
         new_tweets = score.score_tweet(tweets);
-        new_tweets['trends'] = test.trends
+        new_tweets['trends'] = trendHandler.trends
         res.send(new_tweets)
       } else {
         res.send(error)

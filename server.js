@@ -1,8 +1,9 @@
-const express = require('express')
-const Twitter = require('twitter')
-const fs      = require('fs')
-const app     = express()
-let score     = require('./back/score');
+const express     = require('express')
+const Twitter     = require('twitter')
+const fs          = require('fs')
+const app         = express()
+let score         = require('./back/score');
+let TrendHandling = require('./back/TrendHandling');
 
 const json_content = JSON.parse(fs.readFileSync("credentials.json"));
 
@@ -12,6 +13,8 @@ let client = new Twitter({
   access_token_key: json_content.access_token_key,
   access_token_secret: json_content.access_token_secret
 });
+
+let trendHandler = new TrendHandling();
 
 app.get('/', function (req, res) {
   res.send("Hello world!")
@@ -23,6 +26,7 @@ app.get('/trending', function (req, res) {
   var params = {id: '23424819'};
   client.get('trends/place.json', params, function(error, tweets, response){
       if (!error) {
+        test.trends = tweets;
         res.send(tweets)
       } else {
         res.send(error)
@@ -37,7 +41,9 @@ app.get('/tweets', function (req, res) {
   console.log(params)
   client.get('search/tweets.json', params, function(error, tweets, response){
       if (!error) {
-        res.send(score.score_tweet(tweets))
+        new_tweets = score.score_tweet(tweets);
+        new_tweets['trends'] = test.trends
+        res.send(new_tweets)
       } else {
         res.send(error)
       }

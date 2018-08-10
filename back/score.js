@@ -20,14 +20,7 @@ function score_tweet(tweets) {
 						 + follower_weight * tweet.user.followers_count;
 		tweet['score_followers'] = get_score_followers(tweet.user.followers_count);
 		tweet['score_buzz'] = get_score_buzz(tweet.retweet_count, tweet.favorite_count);
-		/*
-		console.log(tweet.user.screen_name + ' -> \n\t> rt : ' + tweet.retweet_count
-			+ '\n\t> fav : ' + tweet.favorite_count
-			+ '\n\t> follower : ' + tweet.user.followers_count
-			+ '\n\t> score : ' + tweet['score']);
-		*/
 	}
-	console.log(tweets)
 	return tweets
 }
 

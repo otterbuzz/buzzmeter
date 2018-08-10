@@ -1,6 +1,6 @@
 <template>
   <div class="buzzTweets text-buzzGrey" ref="tweetList">
-    <h1>{{ hashtag }}</h1>
+    <h1 style="display: none;">{{ hashtag }}</h1>
     <div class="tweets">
       <Tweet v-if="displayMode == 'Tweets'" v-for="tweet in tweets" :id="tweet.id_str" :key="tweet.id">
         <div v-if="tweet.id == tweets[0].id" class="spinner">

@@ -12,10 +12,12 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "chart.js": "^2.7.2",
     "express": "^4.16.3",
     "moment": "^2.22.2",
     "twitter": "^1.7.1",
     "vue": "^2.5.2",
+    "vue-chartjs": "^3.4.0",
     "vue-router": "^3.0.1",
     "vue-scrollto": "^2.11.0",
     "vue-tweet-embed": "^2.1.1"

@@ -6,23 +6,15 @@
     <div class="row">
       <div class="topics col-4">
         <div v-for="(topic, index) in trendingTopics" :key="index" class="card bg-buzzGrey text-white mb-3">
-          <div class="card-body" v-scroll-to="'.buzzNavbar'" @click="displayTweets(topic.name, 'Tweets')" @click.ctrl="displayTweets(topic.name, 'Basic')">
-            <h5 class="card-title" :class="{ 'text-buzzOrange': topic.name == hashtag }">{{ topic.name }}</h5>
+          <div class="card-body" v-scroll-to="'.buzzNavbar'" @click="getTweetsAndStats(topic.name)">
+            <h5 class="card-title" :class="{ 'text-buzzOrange': topic.name == selectedTopic }">{{ topic.name }}</h5>
             <p class="tweetCount card-text text-right" v-if="topic.tweet_volume">{{ topic.tweet_volume }} tweets</p>
           </div>
         </div>
       </div>
       <div class="col-8">
-        <h2>{{ hashtag }} </h2>
-        <Linechart class="chart" :styles="{height: '400px', position: 'relative'}" :chart-data="datacollection" :options="{layout: {
-            padding: {
-                left: 10,
-                right: 23,
-                top: 23,
-                bottom: 10
-            }
-        }, legend: { display: false }, responsive: true, maintainAspectRatio: false}"/>
-        <Tweets class="tweets" :hashtag="hashtag" :displayMode="displayMode"/>
+        <Linechart class="chart" :styles="{height: '400px', position: 'relative'}" :chart-data="datacollection"/>
+        <TweetList class="tweets" :tweets="tweets" />
       </div>
     </div>
   </div>
@@ -30,42 +22,27 @@
 
 <script>
 import axios from 'axios'
-import Tweets from '@/components/Tweets'
+import TweetList from '@/components/Tweetlist'
 import Linechart from '@/components/Linechart'
 export default {
   name: 'Dashboard',
   data() {
     return {
       trendingTopics: null,
-      hashtag: null,
-      displayMode: 'Tweets',
+      tweets: null,
+      selectedTopic: null,
       count: 0,
       datacollection: null
     }
   },
   components: {
-    Tweets,
+    TweetList,
     Linechart
   },
   methods: {
-    shuffle(array) {
-      let counter = array.length;
-      // While there are elements in the array
-      while (counter > 0) {
-          // Pick a random index
-          let index = Math.floor(Math.random() * counter);
-          // Decrease counter by 1
-          counter--;
-          // And swap the last element with it
-          let temp = array[counter];
-          array[counter] = array[index];
-          array[index] = temp;
-      }
-      return array;
-    },
-    fillData () {
+    fillData(labels, data) {
       this.datacollection = {
-        labels: ['10:00', '10:05', '10:10', '10:15', '10:20', '10:25', '10:30', '10:35', '10:40'],
+        labels: labels,
         datasets: [
           {
             label: 'tweets',
@@ -73,14 +50,23 @@ export default {
             backgroundColor: 'transparent',
             pointBackgroundColor: '#ef8239',
             pointBorderColor: '#ef8239',
-            data: this.shuffle([40, 54, 48, 38, 61, 47, 51, 50, 49])
+            data: data
           }
         ]
       }
     },
-    displayTweets(hashtag, displayMode) {
-      this.hashtag = hashtag
-      this.displayMode = displayMode
+    getTweetsAndStats(hashtag) {
+      this.selectedTopic = hashtag
+      axios
+        .get('http://localhost:3000/tweets?hashtag=' + hashtag.replace('#', ''))
+        .then(response => {
+
+          let metrics = response.data.trends[hashtag]
+          let labels = metrics.map( metric => metric[0])
+          let data = metrics.map( metric => metric[1])
+          this.fillData(labels, data)
+          this.tweets = response.data.statuses
+        })
     }
   },
   mounted(){
@@ -92,13 +78,13 @@ export default {
               this.trendingTopics = response.data[0].trends.sort((b, a) => {
                 return (a.tweet_volume > b.tweet_volume) ? 1 : ((b.tweet_volume > a.tweet_volume) ? -1 : 0)
               })
-              this.hashtag = this.hashtag ? this.hashtag : response.data[0].trends[0].name
+              if (!this.tweets) {
+                this.getTweetsAndStats(this.trendingTopics[0].name)
+              }
             })
         }
-        this.count = (this.count + 1) % 100
+        this.count = (this.count + 1) % 120
     }, 1000);
-
-    this.fillData()
   }
 }
 

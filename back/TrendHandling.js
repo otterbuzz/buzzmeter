@@ -21,6 +21,7 @@ class TrendHandling {
 				this.dict_trends[trend_array[0].trends[trend].name]['data']=[val_data];
 			}
 		}
+		console.log(this.dict_trends)
 	}
 
 	get trends() {

@@ -42,7 +42,8 @@ app.get('/tweets', function (req, res) {
   client.get('search/tweets.json', params, function(error, tweets, response){
       if (!error) {
         new_tweets = score.score_tweet(tweets);
-        new_tweets['trends'] = trendHandler.trends
+        new_tweets['trends'] = trendHandler.trends;
+        new_tweets = score.clean_tweets(new_tweets);
         res.send(new_tweets)
       } else {
         res.send(error)

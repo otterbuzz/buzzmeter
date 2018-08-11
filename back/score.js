@@ -25,4 +25,29 @@ function score_tweet(tweets) {
 }
 
 
+function clean_tweets(tweets) {
+	let new_tweets = {};
+	new_tweets['statuses'] = [];
+	new_tweets['trends'] = tweets.trends;
+	for (let tweet of tweets.statuses) {
+		new_tweet = {};
+		new_tweet['created_at'] = tweet.created_at;
+		new_tweet['id'] = tweet.id;
+		new_tweet['id_str'] = tweet.id_str;
+		new_tweet['full_text'] = tweet.full_text;
+		new_tweet['user'] = {};
+		new_tweet['user']['screen_name'] = tweet.user.screen_name;
+		new_tweet['favorite_count'] = tweet.favorite_count;
+		new_tweet['retweet_count'] = tweet.retweet_count;
+		new_tweet['score'] = tweet.score;
+		new_tweet['score_followers'] = tweet.score_followers;
+		new_tweet['score_buzz'] = tweet.score_buzz;
+		new_tweets['statuses'].push(new_tweet);
+	}
+	console.log(new_tweets);
+	return new_tweets
+}
+
+
 module.exports.score_tweet = score_tweet;  
+module.exports.clean_tweets = clean_tweets;  

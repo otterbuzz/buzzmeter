@@ -1,7 +1,7 @@
 <template>
   <div class="buzzDashboard container">
     <div class="refreshBar progress">
-      <div class="progress-bar bg-buzzOrange" role="progressbar" :style="'width: ' + count/0.6 + '%'" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+      <div class="progress-bar bg-buzzOrange" role="progressbar" :style="'width: ' + count/1.2 + '%'" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
     <div class="row">
       <div class="topics col-4">
@@ -67,11 +67,12 @@ export default {
         .get('http://localhost:3000/tweets?hashtag=' + hashtag.replace('#', ''))
         .then(response => {
           let metrics = response.data.trends[hashtag]
-          console.log(metrics)
           let labels = metrics.time
           let data = metrics.data
           this.fillData(labels, data)
-          this.tweets = response.data.statuses
+          this.tweets = response.data.statuses.sort((a, b) => {
+            return a.score_buzz > b.score_buzz ? -1 : 1
+          })
         })
     }
   },
@@ -88,7 +89,7 @@ export default {
               }
             })
         }
-        this.count = (this.count + 1) % 60
+        this.count = (this.count + 1) % 120
     }, 1000);
   }
 }
@@ -114,7 +115,7 @@ export default {
 }
 
 .chart {
-  margin: 10px 0 24px 0;
+  margin: 0 0 24px 0;
   border-radius: 5px;
   box-shadow: 0px 2px 10px rgba(54, 54, 54, 0.3);
 }

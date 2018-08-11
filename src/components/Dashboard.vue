@@ -1,11 +1,12 @@
 <template>
   <div class="buzzDashboard container">
     <div class="refreshBar progress">
-      <div class="progress-bar bg-buzzOrange" role="progressbar" :style="'width: ' + count + '%'" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+      <div class="progress-bar bg-buzzOrange" role="progressbar" :style="'width: ' + count/0.6 + '%'" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
     <div class="row">
       <div class="topics col-4">
-        <div v-for="(topic, index) in trendingTopics" :key="index" class="card bg-buzzGrey text-white mb-3">
+        <input @keyup="filterTopics()" class="form-control mr-sm-2 mb-3" placeholder="Filter trending topics" v-model="trendingFilter">
+        <div v-for="(topic, index) in displayedTopics" :key="index" class="card bg-buzzGrey text-white mb-3">
           <div class="card-body" v-scroll-to="'.buzzNavbar'" @click="getTweetsAndStats(topic.name)">
             <h5 class="card-title" :class="{ 'text-buzzOrange': topic.name == selectedTopic }">{{ topic.name }}</h5>
             <p class="tweetCount card-text text-right" v-if="topic.tweet_volume">{{ topic.tweet_volume }} tweets</p>
@@ -29,10 +30,12 @@ export default {
   data() {
     return {
       trendingTopics: null,
+      displayedTopics: null,
       tweets: null,
       selectedTopic: null,
-      count: 0,
-      datacollection: null
+      trendingFilter: null,
+      datacollection: null,
+      count: 0
     }
   },
   components: {
@@ -40,6 +43,9 @@ export default {
     Linechart
   },
   methods: {
+    filterTopics() {
+      this.displayedTopics = this.trendingFilter !== null ? this.trendingTopics.filter(topic => topic.name.indexOf(this.trendingFilter) > -1) : this.displayedTopics
+    },
     fillData(labels, data) {
       this.datacollection = {
         labels: labels,
@@ -75,15 +81,14 @@ export default {
           axios
             .get('http://localhost:3000/trending')
             .then(response => {
-              this.trendingTopics = response.data[0].trends.sort((b, a) => {
-                return (a.tweet_volume > b.tweet_volume) ? 1 : ((b.tweet_volume > a.tweet_volume) ? -1 : 0)
-              })
+              this.trendingTopics = response.data[0].trends
+              this.displayedTopics = response.data[0].trends
               if (!this.tweets) {
                 this.getTweetsAndStats(this.trendingTopics[0].name)
               }
             })
         }
-        this.count = (this.count + 1) % 120
+        this.count = (this.count + 1) % 60
     }, 1000);
   }
 }

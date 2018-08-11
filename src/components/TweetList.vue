@@ -1,11 +1,12 @@
 <template>
   <div class="container">
-    <div v-for="tweet in tweets" :key="tweet.id" class="card mb-3 text-buzzGrey">
-      <div class="card-header">{{ "@" + tweet.user.screen_name }} - {{ tweet.created_at.split(' +')[0] }} - {{ tweet.favorite_count }} FAV - {{ tweet.retweet_count }} RT</div>
-      <div class="card-body text-dark">
-        <p class="card-text">{{ tweet.full_text }}</p>
+    <Tweet v-for="tweet in tweets" :id="tweet.id_str" :key="tweet.id">
+      <div v-if="tweet.id == tweets[0].id" class="spinner">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
       </div>
-    </div>
+    </Tweet>
   </div>
 </template>
 

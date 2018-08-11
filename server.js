@@ -37,7 +37,7 @@ app.get('/trending', function (req, res) {
 app.get('/tweets', function (req, res) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  var params = {q: req.query.hashtag, result_type: "mixed", tweet_mode: "extended"};
+  var params = {q: req.query.hashtag, result_type: "mixed", tweet_mode: "extended", count: 100};
   console.log(params)
   client.get('search/tweets.json', params, function(error, tweets, response){
       if (!error) {

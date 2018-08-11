@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     filterTopics() {
-      this.displayedTopics = this.trendingFilter !== null ? this.trendingTopics.filter(topic => topic.name.indexOf(this.trendingFilter) > -1) : this.displayedTopics
+      this.displayedTopics = this.trendingFilter !== null ? this.trendingTopics.filter(topic => topic.name.toLowerCase().indexOf(this.trendingFilter.toLowerCase()) > -1) : this.displayedTopics
     },
     fillData(labels, data) {
       this.datacollection = {
@@ -66,10 +66,10 @@ export default {
       axios
         .get('http://localhost:3000/tweets?hashtag=' + hashtag.replace('#', ''))
         .then(response => {
-
           let metrics = response.data.trends[hashtag]
-          let labels = metrics.map( metric => metric[0])
-          let data = metrics.map( metric => metric[1])
+          console.log(metrics)
+          let labels = metrics.time
+          let data = metrics.data
           this.fillData(labels, data)
           this.tweets = response.data.statuses
         })
